@@ -4,14 +4,6 @@ This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
 
-## Clonar el proyecto
-
-Para clonar este proyecto, debe ejecutar el siguiente comando:
-
-```
-git clone https://github.com/sebasporras14/Lab-08AREP.git
-```
-
 ### Prerrequisitos
 
 Para hacer uso de esta aplicación debe tener instalado lo siguiente:
@@ -27,33 +19,42 @@ El proyecto es una aplicación web estilo Twitter que permite autenticarse y pub
 
 ## Arquitectura de la aplicación
 
+## Clonar el proyecto
 
+Para clonar este proyecto, debe ejecutar el siguiente comando:
 
-### Ejecutar el proyecto en AWS
+```
+git clone https://github.com/sebasporras14/Lab-08AREP.git
+```
 
-instalamos Java, git y maven en nuestras instancias EC2
+### Ejecutar el proyecto
 
-	 sudo yum install java-17-amazon-corretto.x86_64
+una vez clonado se compila y se ejecuta con los siguentes comandos
+  ```
+  mvn clean install
 
   ```
-  sudo yum install git -y
   ```
+ mvn quarkus:dev
   ```
-  sudo yum install maven -y
-  ```
+una vez corriendo se va a:
 
-Se accede al repositorio que acabamos de clonar
+```
+http://localhost:8080/twitter/login
 
-	 cd Lab-08AREP
+```
 
-Hacemos la construcción del proyecto
+![image](https://github.com/sebasporras14/Lab-08AREP/assets/69282634/2d92fd40-aa94-4789-8438-13cc15e1ac18)
 
-	 mvn clean package install
+y alingresar un usuario se accede al "twitter"
+
+![image](https://github.com/sebasporras14/Lab-08AREP/assets/69282634/f22c158e-e4ea-4b55-9c92-81d69bc5af19)
 
 
-## Video de la aplicación en funcionamiento
+## Video de la aplicación en funcionamiento en aws
 
 [Video](https://www.youtube.com/watch?v=_QzDmiMpYFA&ab_channel=sebastianporras)
+
 ## Construido con
 
 + [Maven](https://maven.apache.org/) - Dependency Management
