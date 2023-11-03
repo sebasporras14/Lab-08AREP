@@ -19,6 +19,9 @@ El proyecto es una aplicación web estilo Twitter que permite autenticarse y pub
 
 ## Arquitectura de la aplicación
 
+![Imagen de WhatsApp 2023-11-03 a las 17 15 42_c92c3b20](https://github.com/sebasporras14/Lab-08AREP/assets/69282634/f01a758e-cdcb-47dc-86d2-ed58053bf6b0)
+
+
 ## Clonar el proyecto
 
 Para clonar este proyecto, debe ejecutar el siguiente comando:
