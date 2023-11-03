@@ -1,4 +1,4 @@
-package microservicios;
+package controllers;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Twitter-like</title>
+    <title>Twitter</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,10 +11,15 @@
             margin: 0;
             padding: 0;
         }
+        .principal {
+            padding: 50px;
+            background-color: #1e2d3d;
+            margin: 30px;
+        }
         .container {
             background-color: #192734;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Agregamos sombra para que parezca que flotan */
             text-align: center;
             padding: 20px;
             max-width: 500px;
@@ -53,88 +58,102 @@
         }
         .tweet {
             border: 1px solid #1DA1F2;
-            border-radius: 10px;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #22303C;
+            border-radius: 50px;
+            padding: 20px; 
+            margin-top: 20px; 
+            background-color: #1A1A1A; 
+            transition: transform 0.5s ease-in-out;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Hola! Escribe tu tweet</h1>
-        <form>
-            <label for="content">Tweet:</label>
-            <input type="text" id="content" name="content" placeholder="Escribe tu tweet">
-            <br><br>
-            <input type="button" value="Publicar" onclick="loadPostMsg()">
-        </form>
-    </div>
+<div class="principal">
+    <h1>TWITTER</h1>
+    <form>
+        <label for="content"></label><br>
+        <input type="text" id="content" name="content" value="Tweet"><br><br>
+        <input type="button" value="Submit" onclick="loadPostMsg()">
+    </form>
 
-    <ul id="tweetList">
-        <!-- Aquí se mostrarán los tweets -->
-    </ul>
+    <div id="getrespmsg"></div>
+</div>
 
-    <script>
-        function loadPostMsg() {
-            let content = document.getElementById('content').value;
-            let url = "http://localhost:8080/service/post/addPost";
-            const post = localStorage.getItem('username') + "," + content;
+<script>
+    function loadPostMsg() {
+        let content = document.getElementById('content').value;
+        let url = "http://localhost:8080/service/post/addPost";
+        const post = localStorage.getItem('username') + "," + content;
 
-            fetch(url, {
-                method: 'POST',
-                body: JSON.stringify({ content: post }),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error en la solicitud');
-                }
-                return response.json();
-            })
-            .then(data => {
-                getAllPosts();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                const container = document.getElementById('tweetList');
-                container.textContent = 'Error al procesar la solicitud';
+        fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({ content: post }),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la solicitud');
+            }
+            return response.json();
+        })
+        .then(data => {
+            getAllPosts();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const container = document.getElementById('getrespmsg');
+            container.textContent = 'Error al procesar la solicitud';
+        });
+    }
+
+    function getAllPosts() {
+        fetch("http://localhost:8080/service/thread/all-posts", {
+            method: 'GET'
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la solicitud');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const container = document.getElementById('getrespmsg');
+            container.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevo contenido
+            const keys = Object.keys(data);
+
+            keys.reverse(); // Revertir el orden de los tweets para mostrar el más reciente primero
+
+            keys.forEach(key => {
+                const tweetContainer = document.createElement('div');
+                tweetContainer.classList.add('tweet'); // Agrega la clase 'tweet' al contenedor
+
+                const p = document.createElement('h5');
+                const datastring = JSON.stringify(data[key]);
+                p.textContent = datastring.split('username')[1].split('content')[1].split(':')[1].replace('}', '').replace(/\\/g, '').replace(/[""]/g, '');
+
+                const h3 = document.createElement('h2');
+                var contenido = datastring.split('content')[1].split(',')[0].replace(/[""]/g, '').replace(/\\/g, '').replace(':', '').replace('}', '');
+                h3.textContent = contenido;
+
+                tweetContainer.appendChild(h3);
+                tweetContainer.appendChild(p);
+                container.appendChild(tweetContainer);
+
+                // Aplicar una animación de surgir al agregar un nuevo tweet
+                tweetContainer.style.transform = 'translateY(50px)';
+                setTimeout(function () {
+                    tweetContainer.style.transform = 'translateY(0)';
+                }, 10);
             });
-        }
-
-        function getAllPosts() {
-            fetch("http://localhost:8080/service/thread/all-posts", {
-                method: 'GET'
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error en la solicitud');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const tweetList = document.getElementById('tweetList');
-                tweetList.innerHTML = '';
-
-                data.forEach(tweet => {
-                    const li = document.createElement('li');
-                    li.className = 'tweet';
-                    li.textContent = tweet;
-                    tweetList.appendChild(li);
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                const container = document.getElementById('tweetList');
-                container.textContent = 'Error al procesar la solicitud';
-            });
-        }
-
-        // Cargar los tweets al cargar la página.
-        getAllPosts();
-    </script>
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const container = document.getElementById('getrespmsg');
+            container.textContent = 'Error al procesar la solicitud';
+        });
+    }
+</script>
 </body>
 </html>
