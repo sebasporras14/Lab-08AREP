@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Twitter-like</title>
+    <title>Twitter</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -53,7 +53,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Bienvenido, ingresa a Twitter-like</h1>
+        <h1>Bienvenido, ingresa a tu usuario</h1>
         <form>
             <label for="user">Usuario:</label><br>
             <input type="text" id="user" name="user" placeholder="Ingresa tu usuario"><br><br>
@@ -65,7 +65,7 @@
         function saveUsername(){
             const username = document.getElementById('user').value;
             localStorage.setItem('username', username);
-            const endpoint = "https://lab08canti-porras.s3.amazonaws.com/resources/public/index.html"
+            const endpoint = "https://cantillo-porras.s3.amazonaws.com/resources/public/index.html"
             window.location.href = endpoint;
         }
     </script>
