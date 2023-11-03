@@ -81,7 +81,7 @@
 <script>
     function loadPostMsg() {
         let content = document.getElementById('content').value;
-        let url = "http://localhost:8080/service/post/addPost";
+        let url = "http://ec2-54-227-58-228.compute-1.amazonaws.com/service/post/addPost";
         const post = localStorage.getItem('username') + "," + content;
 
         fetch(url, {
@@ -109,7 +109,7 @@
     }
 
     function getAllPosts() {
-        fetch("http://localhost:8080/service/thread/all-posts", {
+        fetch("http://ec2-107-21-165-38.compute-1.amazonaws.com/service/thread/all-posts", {
             method: 'GET'
         })
         .then(response => {
